@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__obsmcp__health_check",
+      "mcp__obsmcp__get_project_status_snapshot",
+      "mcp__obsmcp__get_current_task",
+      "mcp__obsmcp__get_latest_handoff",
+      "mcp__obsmcp__get_blockers",
+      "mcp__obsmcp__get_recent_work",
+      "mcp__obsmcp__get_decisions",
+      "mcp__obsmcp__session_open",
+      "mcp__obsmcp__get_active_tasks",
+      "mcp__obsmcp__get_project_brief",
+      "mcp__obsmcp__search_notes",
+      "mcp__obsmcp__get_audit_log",
+      "mcp__obsmcp__list_projects",
+      "mcp__obsmcp__web_search",
+      "mcp__obsmcp__get_token_usage_stats",
+      "mcp__obsmcp__resolve_active_project"
+    ]
+  }
+}

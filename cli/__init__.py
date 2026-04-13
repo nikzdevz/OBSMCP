@@ -1,0 +1,2 @@
+"""obsmcp CLI package."""
+
