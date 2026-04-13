@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">obsmcp next roadmap</title>
+  <desc id="desc">Roadmap card showing recommended next improvements for VS Code startup integration and output-token strategy.</desc>
+  <rect width="1280" height="640" fill="#0b1020"/>
+  <text x="70" y="92" fill="#f8fafc" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700">Next Recommended Commit</text>
+  <text x="70" y="132" fill="#93c5fd" font-family="Segoe UI, Arial, sans-serif" font-size="22">Improve VS Code startup integration and make output-token strategy easier to adopt.</text>
+
+  <rect x="70" y="185" width="540" height="360" rx="26" fill="#111827" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="105" y="235" fill="#dbeafe" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Track A: VS Code Integration</text>
+  <text x="105" y="285" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">1. Resolve project before continuity reads</text>
+  <text x="105" y="320" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">2. Run startup preflight automatically</text>
+  <text x="105" y="355" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">3. Show resume board before resuming work</text>
+  <text x="105" y="390" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">4. Pass session labels + workstreams explicitly</text>
+  <text x="105" y="425" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">5. Prefer new sessions for unrelated prompts</text>
+  <text x="105" y="485" fill="#86efac" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">Outcome: safer startup and cleaner session history</text>
+
+  <rect x="670" y="185" width="540" height="360" rx="26" fill="#111827" stroke="#16a34a" stroke-width="2"/>
+  <text x="705" y="235" fill="#dcfce7" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Track B: Output Strategy</text>
+  <text x="705" y="285" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">1. Expose recommended output mode helpers</text>
+  <text x="705" y="320" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">2. Add clearer task-type presets</text>
+  <text x="705" y="355" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">3. Show token savings in startup dashboards</text>
+  <text x="705" y="390" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">4. Expand docs for off / prompt_only / enforced</text>
+  <text x="705" y="425" fill="#cbd5e1" font-family="Segoe UI, Arial, sans-serif" font-size="22">5. Keep continuity and output policy clearly separate</text>
+  <text x="705" y="485" fill="#86efac" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">Outcome: easier rollout of real output-token savings</text>
+</svg>

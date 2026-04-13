@@ -5,11 +5,18 @@
 </p>
 
 <p align="center">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-22c55e">
+  <img alt="Tools" src="https://img.shields.io/badge/tools-117-2563eb">
   <img alt="Windows First" src="https://img.shields.io/badge/platform-Windows%20first-0f172a">
   <img alt="Transport" src="https://img.shields.io/badge/MCP-HTTP%20%2B%20CLI-2563eb">
   <img alt="Backend" src="https://img.shields.io/badge/backend-FastAPI-059669">
   <img alt="Storage" src="https://img.shields.io/badge/storage-SQLite%20%2B%20Markdown-7c3aed">
   <img alt="Continuity" src="https://img.shields.io/badge/focus-Project%20continuity-f59e0b">
+  <img alt="Repo" src="https://img.shields.io/badge/GitHub-OBSMCP-f43f5e">
+</p>
+
+<p align="center">
+  <img alt="obsmcp overview" src="docs/assets/obsmcp-overview.svg">
 </p>
 
 `obsmcp` stands for `Obsidian MCP`.
@@ -26,6 +33,17 @@ Instead of relying on one long conversation, `obsmcp` stores:
 
 If you are building with Codex, Claude Code, Cursor, Warp, VS Code MCP clients, or your own internal tooling, `obsmcp` is designed to be the shared memory and project-management layer those tools can all use together.
 
+## At A Glance
+
+| For developers who need... | obsmcp gives you... |
+| --- | --- |
+| reliable restart after interrupted AI work | session tracking, resume packets, startup preflight, stale-session detection |
+| less prompt replay | fast/balanced/deep/delta/retrieval context surfaces |
+| better project memory | tasks, blockers, decisions, handoffs, relevant files, Obsidian notes |
+| code-aware context | Code Atlas, semantic search, symbol descriptions, related symbol lookup |
+| cost discipline | token-aware context assembly, output policy controls, output compaction, token usage stats |
+| multi-client workflows | one project workspace for Codex, Claude Code, Cursor, Warp, and custom MCP clients |
+
 ## Table Of Contents
 
 - [What Is OBS MCP?](#what-is-obs-mcp)
@@ -40,6 +58,7 @@ If you are building with Codex, Claude Code, Cursor, Warp, VS Code MCP clients, 
 - [Comparison With Other MCP Servers](#comparison-with-other-mcp-servers)
 - [Where obsmcp Wins](#where-obsmcp-wins)
 - [Where obsmcp Is Weaker](#where-obsmcp-is-weaker)
+- [Next Recommended Commit](#next-recommended-commit)
 - [Documentation Index](#documentation-index)
 
 ## What Is OBS MCP?
@@ -705,8 +724,34 @@ Current practical cons of `obsmcp`:
 - not a replacement for specialist browser or GitHub automation servers
 - not a full multi-agent orchestration framework
 
+## Next Recommended Commit
+
+<p align="center">
+  <img alt="obsmcp roadmap" src="docs/assets/obsmcp-roadmap.svg">
+</p>
+
+The next high-value commit is already scoped in [docs/NEXT_COMMIT_PLAN.md](docs/NEXT_COMMIT_PLAN.md).
+
+Recommended direction:
+
+- improve VS Code startup integration so clients automatically use:
+  - `resolve_active_project`
+  - `get_startup_preflight`
+  - `get_resume_board`
+- make output-token strategy easier to adopt by surfacing:
+  - recommended output modes
+  - task-type presets
+  - token-savings visibility in dashboards
+
+Suggested next commit title:
+
+```text
+Improve VS Code startup flow and expose output-token strategy defaults
+```
+
 ## Documentation Index
 
+- [Next Commit Plan](docs/NEXT_COMMIT_PLAN.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Usage Guide](docs/USAGE.md)
 - [Installation Guide](docs/INSTALLATION.md)
