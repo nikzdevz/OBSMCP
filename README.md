@@ -1,6 +1,5 @@
 # OBSMCP — Observable Machine Code Protocol
 
-[![CI](https://github.com/nikzdevz/obsmcp/actions/workflows/ci.yml/badge.svg)](https://github.com/nikzdevz/obsmcp/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.12%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -153,7 +152,7 @@ Scaffolded in this PR:
 - [x] MCP stdio tool server exposing 17 tool functions
 - [x] 10-page React dashboard with live SSE-driven cache invalidation
 - [x] Docker image + `docker compose` deployment
-- [x] CI: Ruff, Pytest, TypeScript build, Docker build
+- [x] Ruff + Pytest for the Python side, TypeScript typecheck + Vite build for the frontend, `docker build` for the server image (all runnable locally — no CI configured by design)
 
 Known gaps / follow-ups:
 

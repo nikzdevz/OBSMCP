@@ -49,4 +49,4 @@ pytest -q                 # backend + tool
 cd frontend && npm run typecheck && npm run build
 ```
 
-CI runs all three on every PR.
+Run all three locally before opening a PR — this project intentionally has no CI/GitHub Actions.
