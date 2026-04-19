@@ -48,7 +48,6 @@ async def sse_events(request: Request) -> StreamingResponse:
 @router.get("/stats")
 def stats(project_id: str | None = None) -> dict[str, Any]:
     db = get_db()
-    scope = "" if project_id is None else " AND project_id=?"
     base_where = "WHERE 1=1" if project_id is None else "WHERE project_id=?"
     args: tuple[Any, ...] = () if project_id is None else (project_id,)
 
@@ -81,5 +80,4 @@ def stats(project_id: str | None = None) -> dict[str, Any]:
         "nodes": count("knowledge_nodes"),
         "edges": count("knowledge_edges"),
         "agents": scalar("SELECT COUNT(*) FROM agent_configs"),
-        "_scope": scope,
     }
