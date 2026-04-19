@@ -20,8 +20,11 @@ export default function CreateProjectModal({ onClose }: Props): JSX.Element {
     mutationFn: (body: { name: string; path: string; repo_url: string | null }) =>
       api.post<Project>('/api/projects', body),
     onSuccess: (project) => {
-      qc.invalidateQueries({ queryKey: ['projects'] });
+      qc.setQueryData<Project[]>(['projects'], (prev) =>
+        prev ? [...prev, project] : [project],
+      );
       setCurrent(project.id);
+      qc.invalidateQueries({ queryKey: ['projects'] });
       onClose();
     },
   });
