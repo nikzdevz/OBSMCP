@@ -16,7 +16,7 @@ export function useProjects() {
   useEffect(() => {
     const list = query.data;
     if (!list || list.length === 0) return;
-    if (!currentId || !list.some((p) => p.id === currentId)) {
+    if (currentId == null) {
       setCurrent(list[0].id);
     }
   }, [query.data, currentId, setCurrent]);
