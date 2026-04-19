@@ -15,6 +15,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { useConnectionStatus } from '../hooks/useConnectionStatus';
+import ProjectSelector from './ProjectSelector';
 
 interface NavItem {
   to: string;
@@ -44,7 +45,8 @@ export default function Layout(): JSX.Element {
           <span className="inline-block h-6 w-6 rounded-md bg-brand-600" />
           OBSMCP
         </div>
-        <nav className="flex-1 px-2 pb-4">
+        <ProjectSelector />
+        <nav className="flex-1 px-2 pb-4 pt-3">
           {NAV.map((item) => (
             <NavLink
               key={item.to}

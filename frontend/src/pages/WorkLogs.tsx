@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { WorkLog } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 export default function WorkLogsPage(): JSX.Element {
+  const projectId = useCurrentProjectId();
   const logs = useQuery<WorkLog[]>({
-    queryKey: ['work-logs'],
-    queryFn: () => api.get<WorkLog[]>('/api/work-logs'),
+    queryKey: ['work-logs', { projectId }],
+    queryFn: () => api.get<WorkLog[]>(buildQuery('/api/work-logs', { project_id: projectId })),
   });
   return (
     <>

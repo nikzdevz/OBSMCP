@@ -40,6 +40,20 @@ async function handle<T>(res: Response): Promise<T> {
 
 const base = '';
 
+export function buildQuery(
+  path: string,
+  params: Record<string, string | number | null | undefined>,
+): string {
+  const entries = Object.entries(params).filter(
+    ([, v]) => v !== undefined && v !== null && v !== '',
+  );
+  if (entries.length === 0) return path;
+  const qs = new URLSearchParams();
+  for (const [k, v] of entries) qs.set(k, String(v));
+  const sep = path.includes('?') ? '&' : '?';
+  return `${path}${sep}${qs.toString()}`;
+}
+
 export const api = {
   get: <T>(path: string) =>
     fetch(`${base}${path}`, { headers: authHeaders() }).then((r) => handle<T>(r)),

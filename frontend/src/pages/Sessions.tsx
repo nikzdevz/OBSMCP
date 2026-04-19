@@ -1,14 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { Session } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 export default function SessionsPage(): JSX.Element {
   const qc = useQueryClient();
+  const projectId = useCurrentProjectId();
   const sessions = useQuery<Session[]>({
-    queryKey: ['sessions'],
-    queryFn: () => api.get<Session[]>('/api/sessions'),
+    queryKey: ['sessions', { projectId }],
+    queryFn: () => api.get<Session[]>(buildQuery('/api/sessions', { project_id: projectId })),
   });
   const close = useMutation({
     mutationFn: (id: string) => api.put<Session>(`/api/sessions/${id}/close`, {}),

@@ -2,19 +2,22 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { Decision } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 export default function DecisionsPage(): JSX.Element {
   const qc = useQueryClient();
+  const projectId = useCurrentProjectId();
   const [decision, setDecision] = useState('');
   const [context, setContext] = useState('');
   const decisions = useQuery<Decision[]>({
-    queryKey: ['decisions'],
-    queryFn: () => api.get<Decision[]>('/api/decisions'),
+    queryKey: ['decisions', { projectId }],
+    queryFn: () => api.get<Decision[]>(buildQuery('/api/decisions', { project_id: projectId })),
   });
   const create = useMutation({
-    mutationFn: (body: Partial<Decision>) => api.post<Decision>('/api/decisions', body),
+    mutationFn: (body: Partial<Decision>) =>
+      api.post<Decision>('/api/decisions', { ...body, project_id: projectId }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['decisions'] });
       setDecision('');
