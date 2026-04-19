@@ -12,13 +12,18 @@ import {
 
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { PerformanceLog } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 export default function PerformanceLogsPage(): JSX.Element {
+  const projectId = useCurrentProjectId();
   const logs = useQuery<PerformanceLog[]>({
-    queryKey: ['performance-logs'],
-    queryFn: () => api.get<PerformanceLog[]>('/api/performance-logs?limit=500'),
+    queryKey: ['performance-logs', { projectId }],
+    queryFn: () =>
+      api.get<PerformanceLog[]>(
+        buildQuery('/api/performance-logs', { limit: 500, project_id: projectId }),
+      ),
   });
 
   const series = useMemo(() => {

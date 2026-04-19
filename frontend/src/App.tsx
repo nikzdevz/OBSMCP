@@ -15,11 +15,13 @@ import PerformanceLogs from './pages/PerformanceLogs';
 import SettingsPage from './pages/Settings';
 import NotFound from './pages/NotFound';
 import { eventBus } from './events/EventBus';
+import { useProjectStore } from './stores/project';
 
 export default function App(): JSX.Element {
   const qc = useQueryClient();
   useEffect(() => {
     eventBus.attachQueryClient(qc);
+    eventBus.setProjectIdProvider(() => useProjectStore.getState().currentProjectId);
     eventBus.connect();
     return () => eventBus.disconnect();
   }, [qc]);

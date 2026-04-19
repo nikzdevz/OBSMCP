@@ -17,16 +17,19 @@ import { Play } from 'lucide-react';
 
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { CodeAtlasFile, CodeAtlasScan } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 const COLORS = ['#5b71ff', '#f97316', '#22c55e', '#ef4444', '#a855f7', '#eab308', '#06b6d4'];
 
 export default function CodeAtlasPage(): JSX.Element {
   const qc = useQueryClient();
+  const projectId = useCurrentProjectId();
   const scans = useQuery<CodeAtlasScan[]>({
-    queryKey: ['code-atlas', 'scans'],
-    queryFn: () => api.get<CodeAtlasScan[]>('/api/code-atlas'),
+    queryKey: ['code-atlas', 'scans', { projectId }],
+    queryFn: () =>
+      api.get<CodeAtlasScan[]>(buildQuery('/api/code-atlas', { project_id: projectId })),
   });
   const latestScan = scans.data?.[0];
   const filesQuery = useQuery<{ files: CodeAtlasFile[] }>({
@@ -36,7 +39,8 @@ export default function CodeAtlasPage(): JSX.Element {
       api.get<{ files: CodeAtlasFile[] }>(`/api/code-atlas/scan/${latestScan!.id}/files?per_page=500`),
   });
   const start = useMutation({
-    mutationFn: () => api.post<CodeAtlasScan>('/api/code-atlas/scan', {}),
+    mutationFn: () =>
+      api.post<CodeAtlasScan>('/api/code-atlas/scan', { project_id: projectId }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['code-atlas'] }),
   });
 

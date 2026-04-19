@@ -46,32 +46,38 @@ async def sse_events(request: Request) -> StreamingResponse:
 
 
 @router.get("/stats")
-def stats() -> dict[str, Any]:
+def stats(project_id: str | None = None) -> dict[str, Any]:
     db = get_db()
+    base_where = "WHERE 1=1" if project_id is None else "WHERE project_id=?"
+    args: tuple[Any, ...] = () if project_id is None else (project_id,)
 
-    def scalar(sql: str, params: tuple = ()) -> int:
+    def scalar(sql: str, params: tuple[Any, ...] = ()) -> int:
         row = db.execute(sql, params).fetchone()
         return int(row[0]) if row else 0
 
+    def count(table: str, extra: str = "") -> int:
+        sql = f"SELECT COUNT(*) FROM {table} {base_where}{extra}"
+        return scalar(sql, args)
+
     return {
         "tasks": {
-            "total": scalar("SELECT COUNT(*) FROM tasks"),
-            "open": scalar("SELECT COUNT(*) FROM tasks WHERE status='open'"),
-            "in_progress": scalar("SELECT COUNT(*) FROM tasks WHERE status='in_progress'"),
-            "blocked": scalar("SELECT COUNT(*) FROM tasks WHERE status='blocked'"),
-            "done": scalar("SELECT COUNT(*) FROM tasks WHERE status='done'"),
+            "total": count("tasks"),
+            "open": count("tasks", " AND status='open'"),
+            "in_progress": count("tasks", " AND status='in_progress'"),
+            "blocked": count("tasks", " AND status='blocked'"),
+            "done": count("tasks", " AND status='done'"),
         },
         "sessions": {
-            "total": scalar("SELECT COUNT(*) FROM sessions"),
-            "active": scalar("SELECT COUNT(*) FROM sessions WHERE ended_at IS NULL"),
+            "total": count("sessions"),
+            "active": count("sessions", " AND ended_at IS NULL"),
         },
         "blockers": {
-            "active": scalar("SELECT COUNT(*) FROM blockers WHERE status='active'"),
-            "resolved": scalar("SELECT COUNT(*) FROM blockers WHERE status='resolved'"),
+            "active": count("blockers", " AND status='active'"),
+            "resolved": count("blockers", " AND status='resolved'"),
         },
-        "decisions": scalar("SELECT COUNT(*) FROM decisions"),
-        "work_logs": scalar("SELECT COUNT(*) FROM work_logs"),
-        "nodes": scalar("SELECT COUNT(*) FROM knowledge_nodes"),
-        "edges": scalar("SELECT COUNT(*) FROM knowledge_edges"),
+        "decisions": count("decisions"),
+        "work_logs": count("work_logs"),
+        "nodes": count("knowledge_nodes"),
+        "edges": count("knowledge_edges"),
         "agents": scalar("SELECT COUNT(*) FROM agent_configs"),
     }

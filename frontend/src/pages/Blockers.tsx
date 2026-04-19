@@ -2,21 +2,24 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { Blocker } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 export default function BlockersPage(): JSX.Element {
   const qc = useQueryClient();
+  const projectId = useCurrentProjectId();
   const [description, setDescription] = useState('');
   const [severity, setSeverity] = useState<Blocker['severity']>('medium');
   const [resolution, setResolution] = useState<Record<string, string>>({});
 
   const blockers = useQuery<Blocker[]>({
-    queryKey: ['blockers'],
-    queryFn: () => api.get<Blocker[]>('/api/blockers'),
+    queryKey: ['blockers', { projectId }],
+    queryFn: () => api.get<Blocker[]>(buildQuery('/api/blockers', { project_id: projectId })),
   });
   const create = useMutation({
-    mutationFn: (body: Partial<Blocker>) => api.post<Blocker>('/api/blockers', body),
+    mutationFn: (body: Partial<Blocker>) =>
+      api.post<Blocker>('/api/blockers', { ...body, project_id: projectId }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['blockers'] }),
   });
   const resolve = useMutation({

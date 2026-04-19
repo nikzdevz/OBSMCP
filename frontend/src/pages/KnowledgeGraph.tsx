@@ -5,8 +5,9 @@ import 'reactflow/dist/style.css';
 
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { KnowledgeEdge, KnowledgeNode } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 interface Graph {
   nodes: KnowledgeNode[];
@@ -14,9 +15,10 @@ interface Graph {
 }
 
 export default function KnowledgeGraphPage(): JSX.Element {
+  const projectId = useCurrentProjectId();
   const graph = useQuery<Graph>({
-    queryKey: ['knowledge-graph'],
-    queryFn: () => api.get<Graph>('/api/knowledge-graph'),
+    queryKey: ['knowledge-graph', { projectId }],
+    queryFn: () => api.get<Graph>(buildQuery('/api/knowledge-graph', { project_id: projectId })),
   });
 
   const { nodes, edges } = useMemo(() => {

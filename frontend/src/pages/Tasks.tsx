@@ -4,21 +4,24 @@ import { Plus, Trash2 } from 'lucide-react';
 
 import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { Task } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 const STATUSES: Task['status'][] = ['open', 'in_progress', 'blocked', 'done'];
 
 export default function TasksPage(): JSX.Element {
   const qc = useQueryClient();
+  const projectId = useCurrentProjectId();
   const [title, setTitle] = useState('');
   const tasks = useQuery<Task[]>({
-    queryKey: ['tasks'],
-    queryFn: () => api.get<Task[]>('/api/tasks'),
+    queryKey: ['tasks', { projectId }],
+    queryFn: () => api.get<Task[]>(buildQuery('/api/tasks', { project_id: projectId })),
   });
 
   const create = useMutation({
-    mutationFn: (body: Partial<Task>) => api.post<Task>('/api/tasks', body),
+    mutationFn: (body: Partial<Task>) =>
+      api.post<Task>('/api/tasks', { ...body, project_id: projectId }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
   });
   const update = useMutation({

@@ -113,6 +113,15 @@ export interface PerformanceLog {
   logged_at: string;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  path: string;
+  repo_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Stats {
   tasks: { total: number; open: number; in_progress: number; blocked: number; done: number };
   sessions: { total: number; active: number };

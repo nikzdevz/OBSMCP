@@ -50,10 +50,12 @@ class EdgesBulk(BaseModel):
 
 
 @router.get("")
-def get_graph() -> dict[str, Any]:
+def get_graph(project_id: str | None = None) -> dict[str, Any]:
+    where = "" if project_id is None else "project_id=?"
+    params: tuple[Any, ...] = () if project_id is None else (project_id,)
     return {
-        "nodes": list_rows("knowledge_nodes"),
-        "edges": list_rows("knowledge_edges"),
+        "nodes": list_rows("knowledge_nodes", where, params),
+        "edges": list_rows("knowledge_edges", where, params),
     }
 
 

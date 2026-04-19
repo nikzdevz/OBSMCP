@@ -12,8 +12,9 @@ import {
 } from 'lucide-react';
 
 import PageHeader from '../components/PageHeader';
-import { api } from '../api/client';
+import { api, buildQuery } from '../api/client';
 import type { Blocker, Session, Stats, Task } from '../api/types';
+import { useCurrentProjectId } from '../stores/project';
 
 interface StatCard {
   label: string;
@@ -23,21 +24,24 @@ interface StatCard {
 }
 
 export default function Dashboard(): JSX.Element {
+  const projectId = useCurrentProjectId();
   const stats = useQuery<Stats>({
-    queryKey: ['stats'],
-    queryFn: () => api.get<Stats>('/api/stats'),
+    queryKey: ['stats', { projectId }],
+    queryFn: () => api.get<Stats>(buildQuery('/api/stats', { project_id: projectId })),
   });
   const recentTasks = useQuery<Task[]>({
-    queryKey: ['tasks'],
-    queryFn: () => api.get<Task[]>('/api/tasks'),
+    queryKey: ['tasks', { projectId }],
+    queryFn: () => api.get<Task[]>(buildQuery('/api/tasks', { project_id: projectId })),
   });
   const activeSessions = useQuery<Session[]>({
-    queryKey: ['sessions', { active: true }],
-    queryFn: () => api.get<Session[]>('/api/sessions?active=true'),
+    queryKey: ['sessions', { active: true, projectId }],
+    queryFn: () =>
+      api.get<Session[]>(buildQuery('/api/sessions', { active: 'true', project_id: projectId })),
   });
   const activeBlockers = useQuery<Blocker[]>({
-    queryKey: ['blockers', { status: 'active' }],
-    queryFn: () => api.get<Blocker[]>('/api/blockers?status=active'),
+    queryKey: ['blockers', { status: 'active', projectId }],
+    queryFn: () =>
+      api.get<Blocker[]>(buildQuery('/api/blockers', { status: 'active', project_id: projectId })),
   });
 
   const s = stats.data;

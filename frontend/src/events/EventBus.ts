@@ -79,9 +79,14 @@ export class EventBus {
   private queryClient: QueryClient | null = null;
   public connected = false;
   private statusListeners = new Set<(c: boolean) => void>();
+  private projectIdProvider: () => string | null = () => null;
 
   attachQueryClient(qc: QueryClient): void {
     this.queryClient = qc;
+  }
+
+  setProjectIdProvider(fn: () => string | null): void {
+    this.projectIdProvider = fn;
   }
 
   connect(): void {
@@ -137,6 +142,19 @@ export class EventBus {
     try {
       event = JSON.parse(raw);
     } catch {
+      return;
+    }
+    const currentProjectId = this.projectIdProvider();
+    const eventProjectId =
+      typeof event.payload === 'object' && event.payload
+        ? (event.payload as { project_id?: string | null }).project_id ?? null
+        : null;
+    const scoped = eventProjectId !== null;
+    if (
+      scoped &&
+      currentProjectId !== null &&
+      eventProjectId !== currentProjectId
+    ) {
       return;
     }
     this.listeners.forEach((l) => l(event));
