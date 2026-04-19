@@ -1,1 +1,0 @@
-"""obsmcp server package."""

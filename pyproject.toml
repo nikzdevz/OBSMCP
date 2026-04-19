@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "obsmcp"
+version = "0.1.0"
+description = "OBSMCP — Observable Machine Code Protocol. Local MCP tool + FastAPI backend + React dashboard."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+authors = [{ name = "OBSMCP Contributors" }]
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "pydantic>=2.7",
+    "python-multipart>=0.0.9",
+    "psutil>=5.9",
+    "watchfiles>=0.22",
+    "websockets>=12",
+    "anyio>=4",
+    "mcp>=1.0",
+]
+
+[project.optional-dependencies]
+llm = ["anthropic>=0.34"]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "httpx>=0.27",
+]
+
+[project.scripts]
+obsmcp = "obsmcp.__main__:main"
+obsmcp-setup = "obsmcp.obsmcp_setup:main"
+obsmcp-server = "obsmcp_server.main:run"
+
+[tool.setuptools.packages.find]
+where = ["tool", "server"]
+include = ["obsmcp*", "obsmcp_server*"]
+
+[tool.setuptools.package-data]
+"obsmcp_server" = ["schema.sql", "frontend_dist/**/*"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = ["frontend", "build", "dist", "node_modules"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "C4", "SIM"]
+ignore = ["E501", "B008"]
+
+[tool.mypy]
+python_version = "3.12"
+strict_optional = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+packages = ["obsmcp", "obsmcp_server"]
+exclude = ["frontend/", "build/", "dist/"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tool/tests", "server/tests"]

@@ -1,0 +1,11 @@
+.git
+.github
+.venv
+frontend/node_modules
+frontend/dist
+server/obsmcp_server/frontend_dist
+**/__pycache__
+**/*.pyc
+.obsmcp
+*.db
+.env
