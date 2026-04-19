@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# tsc-emitted files (noEmit is set but keep these ignored defensively)
+src/**/*.js
+src/**/*.d.ts
